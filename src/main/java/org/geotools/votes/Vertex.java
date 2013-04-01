@@ -29,7 +29,7 @@ public class Vertex implements IVertex{
     }
 
     public void removeNeighbourVertex(Vertex vertex) {
-        this.neighbourVertices.remove(vertex);
+        if (!(this.neighbourVertices.remove(vertex))) throw new NullPointerException("Vrchol nesusedi s vrcholom " + vertex.getId());
     }
 
     public ArrayList<IVertex> getNeighbourVertices() {
