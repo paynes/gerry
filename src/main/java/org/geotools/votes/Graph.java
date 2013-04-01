@@ -9,65 +9,48 @@ import java.util.Stack;
 
 import org.geotools.filter.expression.ThisPropertyAccessorFactory;
 
-public class Graph {
+public class Graph implements IGraph {
 	
-	private String id;
-	private ArrayList<Vertex> V = null;
-	private ArrayList<Edge> E = null;
+    private String id;
+    private ArrayList<IVertex> v;
+    private ArrayList<IEdge> e;
 	
-	public Graph(String id) {
-		this.id = id;
-		this.V = new ArrayList<Vertex>();
-		this.E = new ArrayList<Edge>();
-	}
+    public Graph(String id) {
+	this.id = id;
+	this.v = new ArrayList<IVertex>();
+	this.e = new ArrayList<IEdge>();
+    }
 	
+    public void addVertex(Vertex vertex) {
+        this.v.add(vertex);
+    }
+
+    public void removeVertex(Vertex vertex) {
+        if (!(this.v.remove(vertex))) throw new NullPointerException("Vrchol " + vertex.getId() + "sa nenachadza v grafe");    
+    }
+
+    public boolean findVertex(Vertex vertex) {
+        if (this.v.contains(vertex)) return true;
+        return false;
+    }
+
+    public void addEdge(Edge edge) {
+        this.e.add(edge);
+    }
+
+    public void removeEdge(Edge edge) {
+        if(!(this.e.remove(edge))) throw new NullPointerException("Hrana " + edge.toString() + "sa nenachadza v grafe");
+    }
+
+    public ArrayList<IVertex> getV() {
+        return this.v;
+    }
+
+    public ArrayList<IEdge> getE() {
+        return this.e;
+    }
 	
-	public void addVertex(Vertex v) {
-		if (!this.V.contains(v))
-			this.V.add(v);
-	}
-	
-	public Vertex findVertex(Integer index) {
-		for (Vertex v : this.V)
-			if (v.getId().equals(index))
-				return v;
-		return null;
-	}	
-	
-	public void removeVertex(Vertex v) {
-		ArrayList<Edge> edges = new ArrayList<Edge>();
-		edges = this.findEdges(v);
-		for (Edge e : edges) 
-				E.remove(e);
-		for (Vertex ve : this.V) {
-			ve.removeChild(v.getId());
-		}
-		this.V.remove(v);
-	}
-	
-	public void addEdge(Edge e) {
-		if (!this.E.contains(e))
-			this.E.add(e);
-	}
-	
-	
-	public void removeEdge(Edge e) {
-		this.E.remove(e);
-	}
-	
-	public String getId() {		
-		return this.id;
-	}
-	
-	public ArrayList<Vertex> getV() {
-		return this.V;
-	}
-	
-	public ArrayList<Edge> getE() {
-		return this.E;
-	}
-	
-	public Graph clone() {
+	/*public Graph clone() {
 		Graph graph = new Graph(this.id);
 		graph.E = extractedE();
 		graph.V = extractedV();
@@ -818,5 +801,6 @@ public class Graph {
         int hash = 17;
         hash = 37 * hash + id.hashCode();
         return hash;
-    }
+    }*/
+
 }
