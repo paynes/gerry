@@ -6,7 +6,7 @@
 *.ear
 
 # Netbeans files
-#
+
 nbproject/private/
 build/
 nbbuild/
