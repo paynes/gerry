@@ -20,7 +20,7 @@ public class Edge implements IEdge{
     
     @Override
     public String toString() {
-	return "v1:" + this.v1.getId() + " v2:" + this.v2.getId();
+	return "(" + this.v1.getId() + "," + this.v2.getId() + ")";
     }
 	
     @Override
