@@ -23,13 +23,13 @@ public interface IVertex {
      * 
      * @param vertex add neighbour vertex
      */
-    public void addNeighbourVertex(Vertex vertex);
+    public void addNeighbourVertex(IVertex vertex);
     
     /**
      * 
      * @param vertex remove neighbour vertex
      */
-    public void removeNeighbourVertex(Vertex vertex);
+    public void removeNeighbourVertex(IVertex vertex);
     
     /**
      * 
@@ -77,7 +77,7 @@ public interface IVertex {
      * 
      * @return total electors
      */
-    public Integer getScale();
+    public Integer getSumOfElectors();
     
     /**
      * 

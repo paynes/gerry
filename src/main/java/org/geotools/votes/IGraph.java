@@ -16,20 +16,20 @@ public interface IGraph {
      * 
      * @param v add new vertex v in the graph
      */
-    public void addVertex(Vertex vertex);
+    public void addVertex(IVertex vertex);
     
     /**
      * 
      * @param vertex remove vertex from graph
      */
-    public void removeVertex(Vertex vertex);
+    public void removeVertex(IVertex vertex);
     
     /**
      * 
      * @param vertex wanted vertex
      * @return whether is the vertex in the graph
      */
-    public boolean findVertex(Vertex vertex);
+    public boolean findVertex(IVertex vertex);
     
     /**
      * 
@@ -54,4 +54,11 @@ public interface IGraph {
      * @return all graphs edges
      */
     public ArrayList<IEdge> getE();
+    
+    /**
+     * 
+     * @param id vertex id
+     * @return vertex with given id or null
+     */
+    public IVertex getVertexById(int id);
 }

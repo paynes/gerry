@@ -24,11 +24,11 @@ public class Vertex implements IVertex{
         return this.id;
     }
 
-    public void addNeighbourVertex(Vertex vertex) {
+    public void addNeighbourVertex(IVertex vertex) {
         this.neighbourVertices.add(vertex);
     }
 
-    public void removeNeighbourVertex(Vertex vertex) {
+    public void removeNeighbourVertex(IVertex vertex) {
         if (!(this.neighbourVertices.remove(vertex))) throw new NullPointerException("Vrchol nesusedi s vrcholom " + vertex.getId());
     }
 
@@ -60,7 +60,7 @@ public class Vertex implements IVertex{
         return this.cover;
     }
 
-    public Integer getScale() {
+    public Integer getSumOfElectors() {
         return this.repRes + this.demRes;
     }
 

@@ -12,42 +12,50 @@ import org.geotools.filter.expression.ThisPropertyAccessorFactory;
 public class Graph implements IGraph {
 	
     private String id;
-    private ArrayList<IVertex> v;
-    private ArrayList<IEdge> e;
+    private ArrayList<IVertex> vertices;
+    private ArrayList<IEdge> edges;
 	
     public Graph(String id) {
 	this.id = id;
-	this.v = new ArrayList<IVertex>();
-	this.e = new ArrayList<IEdge>();
+	this.vertices = new ArrayList<IVertex>();
+	this.edges = new ArrayList<IEdge>();
     }
 	
-    public void addVertex(Vertex vertex) {
-        this.v.add(vertex);
+    public void addVertex(IVertex vertex) {
+        this.vertices.add(vertex);
     }
 
-    public void removeVertex(Vertex vertex) {
-        if (!(this.v.remove(vertex))) throw new NullPointerException("Vrchol " + vertex.getId() + "sa nenachadza v grafe");    
+    public void removeVertex(IVertex vertex) {
+        if (!(this.vertices.remove(vertex))) throw new NullPointerException("Vrchol " + vertex.getId() + "sa nenachadza v grafe");    
     }
 
-    public boolean findVertex(Vertex vertex) {
-        if (this.v.contains(vertex)) return true;
+    public boolean findVertex(IVertex vertex) {
+        if (this.vertices.contains(vertex)) return true;
         return false;
     }
 
     public void addEdge(Edge edge) {
-        this.e.add(edge);
+        this.edges.add(edge);
     }
 
     public void removeEdge(Edge edge) {
-        if(!(this.e.remove(edge))) throw new NullPointerException("Hrana " + edge.toString() + "sa nenachadza v grafe");
+        if(!(this.edges.remove(edge))) throw new NullPointerException("Hrana " + edge.toString() + "sa nenachadza v grafe");
     }
 
     public ArrayList<IVertex> getV() {
-        return this.v;
+        return this.vertices;
     }
 
     public ArrayList<IEdge> getE() {
-        return this.e;
+        return this.edges;
+    }
+    
+    public IVertex getVertexById(int id) {
+        for (Iterator<IVertex> it = getV().iterator(); it.hasNext();) {
+            IVertex v = it.next();
+            if (v.getId() == id) return v;
+        }
+        return null;
     }
 	
 	/*public Graph clone() {
