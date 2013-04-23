@@ -20,7 +20,7 @@ public interface IGraph {
     
     /**
      * 
-     * @param vertex remove vertex from graph
+     * @param vertex removed vertex from graph
      */
     public void removeVertex(IVertex vertex);
     
@@ -30,6 +30,14 @@ public interface IGraph {
      * @return whether is the vertex in the graph
      */
     public boolean findVertex(IVertex vertex);
+    
+    /**
+     * 
+     * @param vertex1
+     * @param vertex2
+     * @return true if connection is deleted between vertices
+     */
+    public boolean deleteConnectionBetweenVertices(IVertex vertex1, IVertex vertex2);
     
     /**
      * 
@@ -43,4 +51,10 @@ public interface IGraph {
      * @return vertex with given id or null
      */
     public IVertex getVertexById(int id);
+    
+    /**
+     * 
+     * @return true if graph is connected
+     */
+    public boolean isGraphConnected();
 }

@@ -219,19 +219,22 @@ public class App {
 
     	// Open shapefile with mcdgrps.
 //    	File fileA = JFileDataStoreChooser.showOpenFile("shp", null);
-    	File fileA = new File("/home/paynes/new mexico/mapa kvazi zup/sumnm.shp");
+    	//File fileA = new File("/home/paynes/new mexico/mapa kvazi zup/sumnm.shp");
+        File fileA = new File("/home/paynes/new jersey/mapa kvazi zup/sumnj.shp");
     	FileDataStore storeA = FileDataStoreFinder.getDataStore(fileA);
         Object[] objsA = storeA.getFeatureSource().getFeatures().toArray();
         
     	// Open shapefile with "volebne obvody".
 //    	File fileB = JFileDataStoreChooser.showOpenFile("shp", null);
-    	File fileB = new File("/home/paynes/new mexico/mapa volebnych obvodov/tl_2009_35_cd108.shp");
+    	//File fileB = new File("/home/paynes/new mexico/mapa volebnych obvodov/tl_2009_35_cd108.shp");
+        File fileB = new File("/home/paynes/new jersey/mapa volebnych obvodov/tl_2009_34_cd108.shp");
     	FileDataStore storeB = FileDataStoreFinder.getDataStore(fileB);
         Object[] objsB = storeB.getFeatureSource().getFeatures().toArray();   	    
 
     	// Open tab file with election results.
     	//File fileC = JFileDataStoreChooser.showOpenFile("tab", null);
-        File fileC = new File("/home/paynes/new mexico/volebne vysledky/mg_nm.tab");
+        //File fileC = new File("/home/paynes/new mexico/volebne vysledky/mg_nm.tab");
+        File fileC = new File("/home/paynes/new jersey/volebne vysledky/mg_nj.tab");
         
     	// Get election results.
     	HashMap<Integer, Integer[]> results = app.getVotesResults(fileC);    	
@@ -242,11 +245,22 @@ public class App {
         // Dual graph construction.
         System.out.println("Dual graph construction");
         app.createGraph(objsA,results,coverRelation);
+        
+        
+        //IVertex v1 = app.getGraph().getVertexById(21);
+        //IVertex v2 = app.getGraph().getVertexById(23);
+        //IVertex v0 = app.getGraph().getVertexById(6);
+          //      v0.removeNeighbourVertex(v1);
+          //      v0.removeNeighbourVertex(v2);
         //app.loadVertex(objsB);
         for (IVertex v : app.getGraph().getV()) {
             System.out.println("id:" + v.getId() + " susedia " + v.getNeighbourVertices());
             //System.out.println(v);
         }
+        
+        System.out.println(app.getGraph().isGraphConnected());
+
+        
         //System.out.println(app.getGraph().getV().get(0).getNeighbourVertices());
         //Graph dual = (assignResults(loadVertex(objsA),results));
         //Graph dual = createEdges(assignResults(loadVertex(objsA),results),objsA);

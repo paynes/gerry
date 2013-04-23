@@ -1,9 +1,11 @@
 package org.geotools.votes;
 
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
@@ -42,6 +44,44 @@ public class Graph implements IGraph {
             if (v.getId() == id) return v;
         }
         return null;
+    }
+    
+    public boolean isGraphConnected() {
+        IVertex first = getV().get(0);
+        boolean tmp = true;
+        
+        for (IVertex v : getV()) {
+            if (!tmp) return false;
+            if (first.equals(v)) continue;
+            
+            ArrayList<IVertex> neighbours = first.getNeighbourVertices();
+            
+            tmp = false;
+            while (!tmp) {
+                ArrayList<IVertex> path = new ArrayList<IVertex>();
+                for (int i = 0; i < neighbours.size(); i++) {
+                    for (IVertex vertex : neighbours.get(i).getNeighbourVertices()) {
+                        if (!(neighbours.contains(vertex)) && !(path.contains(vertex))) path.add(vertex);
+                    }
+                }
+                if(path.isEmpty()) break;
+                neighbours.addAll(path);
+                if (neighbours.contains(v)) {
+                    tmp = true;
+                }
+            }
+        }
+        return true;
+    }
+    
+    public boolean deleteConnectionBetweenVertices(IVertex vertex1, IVertex vertex2) {
+        try {
+            vertex1.removeNeighbourVertex(vertex2);
+            vertex2.removeNeighbourVertex(vertex1);
+            return true;
+        } catch (NullPointerException e) {
+            throw e;
+        }
     }
 	
 	/*public Graph clone() {
@@ -797,4 +837,5 @@ public class Graph implements IGraph {
         return hash;
     }*/
 
+    
 }
