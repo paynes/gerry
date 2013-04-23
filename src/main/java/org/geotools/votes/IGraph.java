@@ -33,27 +33,9 @@ public interface IGraph {
     
     /**
      * 
-     * @param edge add new edge in the graph
-     */
-    public void addEdge(Edge edge);
-    
-    /**
-     * 
-     * @param edge remove edge from the graph
-     */
-    public void removeEdge(Edge edge);
-    
-    /**
-     * 
      * @return all graphs vertices
      */
     public ArrayList<IVertex> getV();
-    
-    /**
-     * 
-     * @return all graphs edges
-     */
-    public ArrayList<IEdge> getE();
     
     /**
      * 

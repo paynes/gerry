@@ -13,12 +13,10 @@ public class Graph implements IGraph {
 	
     private String id;
     private ArrayList<IVertex> vertices;
-    private ArrayList<IEdge> edges;
 	
     public Graph(String id) {
 	this.id = id;
 	this.vertices = new ArrayList<IVertex>();
-	this.edges = new ArrayList<IEdge>();
     }
 	
     public void addVertex(IVertex vertex) {
@@ -34,20 +32,8 @@ public class Graph implements IGraph {
         return false;
     }
 
-    public void addEdge(Edge edge) {
-        this.edges.add(edge);
-    }
-
-    public void removeEdge(Edge edge) {
-        if(!(this.edges.remove(edge))) throw new NullPointerException("Hrana " + edge.toString() + "sa nenachadza v grafe");
-    }
-
     public ArrayList<IVertex> getV() {
         return this.vertices;
-    }
-
-    public ArrayList<IEdge> getE() {
-        return this.edges;
     }
     
     public IVertex getVertexById(int id) {
