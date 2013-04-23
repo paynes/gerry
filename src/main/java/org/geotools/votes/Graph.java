@@ -15,14 +15,22 @@ public class Graph implements IGraph {
 	
     private String id;
     private ArrayList<IVertex> vertices;
+    private HashMap<Integer,ArrayList<IVertex>> subGraphs;
 	
     public Graph(String id) {
 	this.id = id;
 	this.vertices = new ArrayList<IVertex>();
+        this.subGraphs = new HashMap<Integer,ArrayList<IVertex>>();
     }
 	
     public void addVertex(IVertex vertex) {
         this.vertices.add(vertex);
+        if (subGraphs.containsKey(vertex.getCover())) {
+            subGraphs.get(vertex.getCover()).add(vertex);
+        } else {
+            subGraphs.put(vertex.getCover(),new ArrayList<IVertex>());
+            subGraphs.get(vertex.getCover()).add(vertex);
+        }
     }
 
     public void removeVertex(IVertex vertex) {
@@ -32,6 +40,16 @@ public class Graph implements IGraph {
     public boolean findVertex(IVertex vertex) {
         if (this.vertices.contains(vertex)) return true;
         return false;
+    }
+       
+    public boolean deleteConnectionBetweenVertices(IVertex vertex1, IVertex vertex2) {
+        try {
+            vertex1.removeNeighbourVertex(vertex2);
+            vertex2.removeNeighbourVertex(vertex1);
+            return true;
+        } catch (NullPointerException e) {
+            throw e;
+        }
     }
 
     public ArrayList<IVertex> getV() {
@@ -44,6 +62,34 @@ public class Graph implements IGraph {
             if (v.getId() == id) return v;
         }
         return null;
+    }
+    
+    public Integer getSumOfElectors() {
+        Integer result = 0;
+        for (IVertex v : getV()) {
+            result = result + v.getSumOfElectors();
+        }
+        return result;
+    }
+    
+    public Integer getSumOfElectorsOfSubGraph(int i) {
+        Integer result = 0;
+        for (IVertex v : this.subGraphs.get(i)) {
+            result = result + v.getSumOfElectors();
+        }
+        return result;
+    }
+
+    public Integer getSumEvaluationOfSubGraph(int i, boolean repDem) {
+        Integer result = 0;
+        for (IVertex v : this.subGraphs.get(i)) {
+            if (repDem) {
+                result = result + v.getRepEvaluation();
+            } else {
+                result = result + v.getDemEvaluation();
+            }
+        }
+        return result;
     }
     
     public boolean isGraphConnected() {
@@ -72,16 +118,6 @@ public class Graph implements IGraph {
             }
         }
         return true;
-    }
-    
-    public boolean deleteConnectionBetweenVertices(IVertex vertex1, IVertex vertex2) {
-        try {
-            vertex1.removeNeighbourVertex(vertex2);
-            vertex2.removeNeighbourVertex(vertex1);
-            return true;
-        } catch (NullPointerException e) {
-            throw e;
-        }
     }
 	
 	/*public Graph clone() {

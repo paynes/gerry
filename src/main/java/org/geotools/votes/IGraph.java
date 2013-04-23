@@ -54,6 +54,27 @@ public interface IGraph {
     
     /**
      * 
+     * @return number of electors in graph
+     */
+    public Integer getSumOfElectors();
+    
+    /**
+     * 
+     * @param i number of subgraph
+     * @return number of electors in subgraph
+     */
+    public Integer getSumOfElectorsOfSubGraph(int i);
+    
+    /**
+     * 
+     * @param i index of vertex cover
+     * @param repDem true for republicans evaluation, false for democrats
+     * @return evaluation in subgraph
+     */
+    public Integer getSumEvaluationOfSubGraph(int i, boolean repDem);
+    
+    /**
+     * 
      * @return true if graph is connected
      */
     public boolean isGraphConnected();
