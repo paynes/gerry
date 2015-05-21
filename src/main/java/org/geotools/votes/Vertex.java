@@ -1,6 +1,6 @@
 package org.geotools.votes;
 
-import com.google.common.collect.ImmutableList;
+import sk.java.gerry.api.IVertex;
 import java.util.ArrayList;
 
 public class Vertex implements IVertex{

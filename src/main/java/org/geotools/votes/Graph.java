@@ -1,44 +1,71 @@
 package org.geotools.votes;
 
-import com.google.common.collect.ImmutableList;
+import sk.java.gerry.api.IVertex;
+import sk.java.gerry.api.IGraph;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-
-import org.geotools.filter.expression.ThisPropertyAccessorFactory;
 
 public class Graph implements IGraph {
-	
+    
     private String id;
     private ArrayList<IVertex> vertices;
-    private HashMap<Integer,ArrayList<IVertex>> subGraphs;
+    private final HashMap<String, IGraph> subGraphs;
 	
     public Graph(String id) {
 	this.id = id;
 	this.vertices = new ArrayList<IVertex>();
-        this.subGraphs = new HashMap<Integer,ArrayList<IVertex>>();
+        this.subGraphs = new HashMap<String, IGraph>();
     }
 	
-    public void addVertex(IVertex vertex) {
-        this.vertices.add(vertex);
-        if (subGraphs.containsKey(vertex.getCover())) {
-            subGraphs.get(vertex.getCover()).add(vertex);
+    public void addVertex(IVertex vertex, String id) {
+        if (id != null) {
+            if (subGraphs.get(id) != null) {
+                subGraphs.get(id).addVertex(vertex, null);
+            } else {
+                subGraphs.put(id, new Graph(id));
+                subGraphs.get(id).addVertex(vertex, null);
+            }
         } else {
-            subGraphs.put(vertex.getCover(),new ArrayList<IVertex>());
-            subGraphs.get(vertex.getCover()).add(vertex);
+            vertices.add(vertex);
         }
     }
 
     public void removeVertex(IVertex vertex) {
-        if (!(this.vertices.remove(vertex))) throw new NullPointerException("Vrchol " + vertex.getId() + "sa nenachadza v grafe");    
+        if (vertices.contains(vertex)) {
+            vertices.remove(vertex);
+        } else {
+            for (IGraph graph : subGraphs.values()) {
+                if (graph.getGraphVertices().contains(vertex)) {
+                    graph.removeVertex(vertex);
+                    break;
+                }
+            }
+        }
+    }
+    
+    public String getGraphID() {
+        return this.id;
+    }
+
+    //porozmyslat, ze ci neporovnavat grafy nie len id
+    public void addSubGprah(IGraph graph) {
+        if (subGraphs.get(graph.getGraphID()) == null) {
+            subGraphs.put(graph.getGraphID(), graph);
+        } else {
+            throw new IllegalArgumentException("SubGraph with this id exist");
+        }
+    }
+
+    public void removeSubGraph(IGraph graph) {
+        if (subGraphs.get(graph.getGraphID()) != null) {
+            subGraphs.remove(graph);
+        } else {
+            throw new IllegalArgumentException("SubGraph with this id exist");
+        }
     }
 
     public boolean findVertex(IVertex vertex) {
-        if (this.vertices.contains(vertex)) return true;
         return false;
     }
        
@@ -52,7 +79,7 @@ public class Graph implements IGraph {
         }
     }
 
-    public ArrayList<IVertex> getV() {
+    public ArrayList<IVertex> getGraphVertices() {
         return this.vertices;
     }
     

@@ -1,15 +1,10 @@
-package org.geotools.votes;
+package sk.java.gerry;
 
-import java.awt.SystemColor;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 
 import org.geotools.data.CachingFeatureSource;
 import org.geotools.data.FeatureSource;
@@ -22,7 +17,10 @@ import org.geotools.swing.data.JFileDataStoreChooser;
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.Geometry;
-import java.util.Iterator;
+import org.geotools.votes.Graph;
+import sk.java.gerry.api.IGraph;
+import sk.java.gerry.api.IVertex;
+import org.geotools.votes.Vertex;
 
 public class App {
     

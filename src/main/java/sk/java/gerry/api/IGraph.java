@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.geotools.votes;
+package sk.java.gerry.api;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  *
@@ -12,11 +13,38 @@ import java.util.ArrayList;
  */
 public interface IGraph {
     
+    public String getGraphID();
+    
     /**
      * 
      * @param v add new vertex v in the graph
      */
-    public void addVertex(IVertex vertex);
+    public void addVertex(IVertex vertex, String id);
+    
+    /**
+     * 
+     * @param grapg 
+     */
+    public void addSubGprah(IGraph graph);
+    
+    /**
+     * 
+     * @param id
+     * @return 
+     */
+    public IGraph getSubGraph(String id);
+    
+    /**
+     * 
+     * @return 
+     */
+    public Map<String, IGraph> getSubGraphs();
+    
+    /**
+     * 
+     * @param graph 
+     */
+    public void removeSubGraph(IGraph graph);
     
     /**
      * 
@@ -33,6 +61,11 @@ public interface IGraph {
     
     /**
      * 
+     */
+    public void build();
+    
+    /**
+     * 
      * @param vertex1
      * @param vertex2
      * @return true if connection is deleted between vertices
@@ -43,7 +76,7 @@ public interface IGraph {
      * 
      * @return all graphs vertices
      */
-    public ArrayList<IVertex> getV();
+    public ArrayList<IVertex> getGraphVertices();
     
     /**
      * 
