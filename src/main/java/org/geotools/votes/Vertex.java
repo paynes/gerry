@@ -1,16 +1,17 @@
 package org.geotools.votes;
 
-import com.google.common.collect.ImmutableList;
+import sk.java.gerry.api.IVertex;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Vertex implements IVertex{
 
-    private Integer id;
+    private final Integer id;
     private Integer cover;
     private Integer demRes;
     private Integer repRes;
     private boolean cut;
-    private ArrayList<IVertex> neighbourVertices;
+    private final List<IVertex> neighbourVertices;
     
     public Vertex(Integer id) {
         this.id = id;
@@ -33,7 +34,7 @@ public class Vertex implements IVertex{
         if (!(this.neighbourVertices.remove(vertex))) throw new NullPointerException("Vrchol nesusedi s vrcholom " + vertex.getId());
     }
 
-    public ArrayList<IVertex> getNeighbourVertices() {
+    public List<IVertex> getNeighbourVertices() {
         return this.neighbourVertices;
     }
 

@@ -1,106 +1,135 @@
 package org.geotools.votes;
 
-import com.google.common.collect.ImmutableList;
+import sk.java.gerry.api.IVertex;
+import sk.java.gerry.api.IGraph;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-
-import org.geotools.filter.expression.ThisPropertyAccessorFactory;
+import java.util.Map;
 
 public class Graph implements IGraph {
-	
-    private String id;
-    private ArrayList<IVertex> vertices;
-    private HashMap<Integer,ArrayList<IVertex>> subGraphs;
+    
+    private final String id;
+    private final ArrayList<IVertex> vertices;
+    private final HashMap<String, IGraph> subGraphs;
 	
     public Graph(String id) {
 	this.id = id;
 	this.vertices = new ArrayList<IVertex>();
-        this.subGraphs = new HashMap<Integer,ArrayList<IVertex>>();
+        this.subGraphs = new HashMap<String, IGraph>();
     }
-	
-    public void addVertex(IVertex vertex) {
-        this.vertices.add(vertex);
-        if (subGraphs.containsKey(vertex.getCover())) {
-            subGraphs.get(vertex.getCover()).add(vertex);
+    
+    @Override
+    public String getGraphID() {
+        return this.id;
+    }
+    
+    @Override
+    public void addVertex(IVertex vertex, String id) {
+        if (!this.id.equals(id)) {
+            if (subGraphs.get(id) != null) {
+                subGraphs.get(id).addVertex(vertex, id);
+            } else {
+                subGraphs.put(id, new Graph(id));
+                subGraphs.get(id).addVertex(vertex, id);
+            }
         } else {
-            subGraphs.put(vertex.getCover(),new ArrayList<IVertex>());
-            subGraphs.get(vertex.getCover()).add(vertex);
+            vertices.add(vertex);
         }
     }
 
     public void removeVertex(IVertex vertex) {
-        if (!(this.vertices.remove(vertex))) throw new NullPointerException("Vrchol " + vertex.getId() + "sa nenachadza v grafe");    
-    }
-
-    public boolean findVertex(IVertex vertex) {
-        if (this.vertices.contains(vertex)) return true;
-        return false;
-    }
-       
-    public boolean deleteConnectionBetweenVertices(IVertex vertex1, IVertex vertex2) {
-        try {
-            vertex1.removeNeighbourVertex(vertex2);
-            vertex2.removeNeighbourVertex(vertex1);
-            return true;
-        } catch (NullPointerException e) {
-            throw e;
+        if (vertices.contains(vertex)) {
+            vertices.remove(vertex);
+        } else {
+            for (IGraph graph : subGraphs.values()) {
+                graph.removeVertex(vertex);
+            }
         }
     }
 
-    public ArrayList<IVertex> getV() {
-        return this.vertices;
+    //porozmyslat, ze ci neporovnavat grafy nie len id
+    public void addSubGprah(IGraph graph) {
+        if (subGraphs.get(graph.getGraphID()) == null) {
+            subGraphs.put(graph.getGraphID(), graph);
+        } else {
+            throw new IllegalArgumentException("SubGraph with this id exist");
+        }
     }
     
-    public IVertex getVertexById(int id) {
-        for (Iterator<IVertex> it = getV().iterator(); it.hasNext();) {
-            IVertex v = it.next();
-            if (v.getId() == id) return v;
+    @Override
+    public IGraph getSubGraph(String id) {
+        return this.subGraphs.get(id);
+    }
+
+    @Override
+    public void removeSubGraph(String id) {
+        if (this.subGraphs.containsKey(id)) {
+            this.subGraphs.remove(id);
+        }
+    }
+
+    public IVertex findVertex(Integer vertexId) {
+        for (IVertex vertex : vertices) {
+            if (vertexId.equals(vertex.getId())) {
+                return vertex;
+            }
+        }
+        for (IGraph graph : this.subGraphs.values()) {
+            IVertex vertex = graph.findVertex(vertexId);
+            if (vertex != null) {
+                return vertex;
+            }
         }
         return null;
     }
+
+    public List<IVertex> getGraphVertices() {
+        return this.vertices;
+    }
     
+    //opravit
     public Integer getSumOfElectors() {
         Integer result = 0;
-        for (IVertex v : getV()) {
+        for (IVertex v : getGraphVertices()) {
             result = result + v.getSumOfElectors();
         }
         return result;
     }
     
-    public Integer getSumOfElectorsOfSubGraph(int i) {
-        Integer result = 0;
-        for (IVertex v : this.subGraphs.get(i)) {
-            result = result + v.getSumOfElectors();
-        }
-        return result;
+    //opravit
+    public Integer getSumOfElectorsOfSubGraph(String id) {
+        return this.subGraphs.get(id).getSumOfElectors();
     }
-
-    public Integer getSumEvaluationOfSubGraph(int i, boolean repDem) {
+    
+    //opravit
+    public Integer getSumEvaluation(boolean repDem) {
         Integer result = 0;
-        for (IVertex v : this.subGraphs.get(i)) {
+        for (IVertex vertex : this.vertices) {
             if (repDem) {
-                result = result + v.getRepEvaluation();
+                result += vertex.getRepEvaluation();
             } else {
-                result = result + v.getDemEvaluation();
+                result += vertex.getDemEvaluation();
             }
         }
         return result;
     }
+
+    //opravit
+    public Integer getSumEvaluationOfSubGraph(String id, boolean repDem) {
+        return this.subGraphs.get(id).getSumEvaluation(repDem);
+    }
+    
     
     public boolean isGraphConnected() {
-        IVertex first = getV().get(0);
+        IVertex first = getGraphVertices().get(0);
         boolean tmp = true;
         
-        for (IVertex v : getV()) {
+        for (IVertex v : getGraphVertices()) {
             if (!tmp) return false;
             if (first.equals(v)) continue;
             
-            ArrayList<IVertex> neighbours = first.getNeighbourVertices();
+            List<IVertex> neighbours = first.getNeighbourVertices();
             
             tmp = false;
             while (!tmp) {
@@ -872,6 +901,18 @@ public class Graph implements IGraph {
         hash = 37 * hash + id.hashCode();
         return hash;
     }*/
+
+    public Map<String, IGraph> getSubGraphs() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void build() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean deleteConnectionBetweenVertices(IVertex vertex1, IVertex vertex2) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     
 }
