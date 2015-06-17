@@ -20,12 +20,6 @@ public interface IGraph {
     
     /**
      * 
-     * @param graph
-     */
-    public void addSubGprah(IGraph graph);
-    
-    /**
-     * 
      * @param id
      * @return 
      */
@@ -36,12 +30,7 @@ public interface IGraph {
      * @return 
      */
     public Map<String, IGraph> getSubGraphs();
-    
-    /**
-     * 
-     * @param id
-     */
-    public void removeSubGraph(String id);
+
     
     /**
      * 
@@ -49,13 +38,12 @@ public interface IGraph {
      */
     public void removeVertex(IVertex vertex);
     
-
     /**
      * 
-     * @param vertexId
-     * @return 
+     * @param id
+     * @return whether is the vertex in the graph
      */
-    public IVertex findVertex(Integer vertexId);
+    public IVertex findVertex(Integer id);
     
     /**
      * 
@@ -78,31 +66,31 @@ public interface IGraph {
     
     /**
      * 
+     * @param id vertex id
+     * @return vertex with given id or null
+     */
+    public IVertex getVertexById(int id);
+    
+    /**
+     * 
      * @return number of electors in graph
      */
     public Integer getSumOfElectors();
     
     /**
      * 
-     * @param id
+     * @param i number of subgraph
      * @return number of electors in subgraph
      */
-    public Integer getSumOfElectorsOfSubGraph(String id);
+    public Integer getSumOfElectorsOfSubGraph(int i);
     
     /**
      * 
-     * @param repDem
-     * @return 
-     */
-    public Integer getSumEvaluation(boolean repDem);
-    
-    /**
-     * 
-     * @param id
+     * @param i index of vertex cover
      * @param repDem true for republicans evaluation, false for democrats
      * @return evaluation in subgraph
      */
-    public Integer getSumEvaluationOfSubGraph(String id, boolean repDem);
+    public Integer getSumEvaluationOfSubGraph(int i, boolean repDem);
     
     /**
      * 

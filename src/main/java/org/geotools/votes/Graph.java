@@ -1,17 +1,17 @@
 package org.geotools.votes;
 
-import sk.java.gerry.api.IVertex;
-import sk.java.gerry.api.IGraph;
 import java.util.ArrayList;
 import java.util.HashMap;
+import sk.java.gerry.api.IVertex;
+import sk.java.gerry.api.IGraph;
 import java.util.List;
 import java.util.Map;
 
 public class Graph implements IGraph {
     
     private final String id;
-    private final ArrayList<IVertex> vertices;
-    private final HashMap<String, IGraph> subGraphs;
+    private final List<IVertex> vertices;
+    private final Map<String, IGraph> subGraphs;
 	
     public Graph(String id) {
 	this.id = id;
@@ -63,12 +63,6 @@ public class Graph implements IGraph {
     }
 
     @Override
-    public void removeSubGraph(String id) {
-        if (this.subGraphs.containsKey(id)) {
-            this.subGraphs.remove(id);
-        }
-    }
-
     public IVertex findVertex(Integer vertexId) {
         for (IVertex vertex : vertices) {
             if (vertexId.equals(vertex.getId())) {
@@ -117,7 +111,8 @@ public class Graph implements IGraph {
 
     //opravit
     public Integer getSumEvaluationOfSubGraph(String id, boolean repDem) {
-        return this.subGraphs.get(id).getSumEvaluation(repDem);
+        //return this.subGraphs.get(id).getSumEvaluation(repDem);
+        return 0;
     }
     
     
@@ -911,6 +906,18 @@ public class Graph implements IGraph {
     }
 
     public boolean deleteConnectionBetweenVertices(IVertex vertex1, IVertex vertex2) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public IVertex getVertexById(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Integer getSumOfElectorsOfSubGraph(int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Integer getSumEvaluationOfSubGraph(int i, boolean repDem) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
